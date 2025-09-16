@@ -11,7 +11,7 @@ Zero-dependency retry decorator for Python (sync & async) with circuit-breaker, 
 
 ## Features
 - Zero runtime dependencies – <b>only std-lib</b>.
-- Sync & async support. 
+- Sync & Async support. 
 - Exponential backoff & full jitter.
 - Circuit-breaker support.  
 - Respects Retry-After header.  
@@ -80,6 +80,65 @@ def api_call():
     resp.raise_for_status()  # respects 503 + Retry-After
 ```
 
+### Sample:
+```python
+import time
+import requests
+import aiohttp
+import asyncio
+from retrylite import retry, aretry
+
+# 1. Sync retry ---------------------------------
+print("=== Sync Retry ===")
+calls = 0
+
+@retry(max_attempts=3, backoff=0.5, retry_after=True)
+def fetch_sync(url: str) -> str:
+    global calls
+    calls += 1
+    print(f"[Sync] attempt {calls}")
+    resp = requests.get(url, timeout=3)
+    resp.raise_for_status()
+    return resp.text
+
+try:
+    html = fetch_sync("https://httpbin.org/status/503")
+except requests.HTTPError:
+    print("[Sync] Final failure (expected)")
+print(f"[Sync] Total calls: {calls}\n")
+
+# 2. Async retry --------------------------------
+print("=== Async Retry ===")
+calls = 0
+
+@aretry(max_attempts=3, backoff=0.5, retry_after=True)
+async def fetch_async(url: str) -> str:
+    global calls
+    calls += 1
+    print(f"[Async] attempt {calls}")
+    async with aiohttp.ClientSession() as s:
+        async with s.get(url) as resp:
+            resp.raise_for_status()
+            return await resp.text()
+
+try:
+    html = asyncio.run(fetch_async("https://httpbin.org/status/503"))
+except aiohttp.ClientResponseError:
+    print("[Async] Final failure (expected)")
+print(f"[Async] Total calls: {calls}\n")
+
+# 3. Circuit-breaker demo ----------------------
+print("=== Circuit-Breaker Demo ===")
+
+@retry(max_attempts=5, break_on=(ValueError,), backoff=0.1)
+def always_fail():
+    raise ValueError("permanent")
+
+try:
+    always_fail()
+except ValueError as e:
+    print(f"[Circuit] Immediately raised: {e} (no retry)")
+```
 
 ### Development
 ```sh
