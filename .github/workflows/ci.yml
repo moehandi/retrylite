@@ -19,7 +19,14 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install Poetry
-        uses: snok/install-poetry@v1
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
+      - name: Cache Poetry
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install deps
         run: poetry install --no-interaction
       - name: Install pre-commit
@@ -29,7 +36,7 @@ jobs:
       - name: Pre-commit hooks
         run: poetry run pre-commit run --all-files
       - name: Test & coverage
-        run: poetry run pytest --cov=src --cov-report=xml
+        run: PYTHONPATH=src poetry run pytest --cov=src --cov-report=xml
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
