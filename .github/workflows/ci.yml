@@ -22,6 +22,10 @@ jobs:
         uses: snok/install-poetry@v1
       - name: Install deps
         run: poetry install --no-interaction
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit
+          pre-commit install
       - name: Pre-commit hooks
         run: poetry run pre-commit run --all-files
       - name: Test & coverage
