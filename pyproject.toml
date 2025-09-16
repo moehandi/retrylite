@@ -55,4 +55,16 @@ strict = true
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
-exclude = ["tests", "build", "dist"]   # ⬅ toleransi full tests/ & build artifacts
+exclude = ["tests", "build", "dist"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "8.4.2"
+pytest-cov = "7.0.0"
+types-requests = "^2.32.4.20250913"
+aiohttp = "^3.12.15"
+pre-commit = "^4.3.0"
+black = "^25.1.0"
+ruff = "^0.13.0"
+mypy = "^1.18.1"
+responses = "^0.25.8"
+pytest-asyncio = "^1.2.0"
