@@ -1,7 +1,7 @@
 # retrylite
 
 [![CI](https://github.com/moehandi/retrylite/actions/workflows/ci.yml/badge.svg)](https://github.com/moehandi/retrylite/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/moehandi/retrylite/branch/main/graph/badge.svg)](https://codecov.io/gh/moehandi/retrylite)
+[![codecov](https://codecov.io/gh/moehandi/retrylite/graph/badge.svg?token=J3GLLGS4B8)](https://codecov.io/gh/moehandi/retrylite)
 [![PyPI version](https://badge.fury.io/py/retrylite.svg)](https://badge.fury.io/py/retrylite)
 [![Python versions](https://img.shields.io/pypi/pyversions/retrylite.svg)](https://pypi.org/project/retrylite/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
