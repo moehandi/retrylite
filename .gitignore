@@ -20,6 +20,7 @@ venv.bak/
 # Coverage and test reports
 .coverage
 .coverage.*
+coverage.xml
 htmlcov/
 *.cover
 *.py,cover
